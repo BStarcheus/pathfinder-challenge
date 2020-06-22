@@ -1,20 +1,35 @@
+const form = document.getElementById("file_form");
+form.addEventListener("submit", submit_file);
+
 async function submit_file(event) {
     event.preventDefault();
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", form.action); 
-    xhr.onload = handle_pathfind_resp
+    xhr.onload = handle_pathfind_resp;
     var formData = new FormData(document.getElementById("file_form"));
     xhr.send(formData);
 }
 
 
 async function handle_pathfind_resp(event) { 
-    resp_data = JSON.parse(event.target.response);
+    try {
+        resp_data = JSON.parse(event.target.response);
+    } catch (err) {
+        console.log(err);
+        document.getElementById("error-resp").innerText = "Internal Error";
+        return;
+    }
+    
+    document.getElementById("error-resp").innerText = "";
+    if (resp_data.error) {
+        document.getElementById("error-resp").innerText = resp_data.error;
+        return;
+    }
 
     for (let board = 0; board < resp_data.length; board++) {
         create_board(); // Reset board
-        current_board_data = resp_data[board]
+        current_board_data = resp_data[board];
 
         for (let wall = 0; wall < current_board_data.walls.length; wall++) {
             document.getElementById(current_board_data.walls[wall]).style = 'background-color: grey;';
@@ -28,18 +43,16 @@ async function handle_pathfind_resp(event) {
         if (!current_board_data.user_path_valid) {
             await animate_spaces(current_board_data.correct_checked_spaces, '#2453ff');
         }
-        await animate_spaces(current_board_data.correct_path, '#43a0fd')
+        await animate_spaces(current_board_data.correct_path, '#43a0fd');
 
         document.getElementById('results').innerText += current_board_data.msg;
-        
     }
-    
 }
 
 
 
 function animate_spaces(spaces, color) {
-    i = 0
+    i = 0;
     return new Promise((resolve)=> {
         animate = setInterval(()=>{
             if (i === spaces.length) {
@@ -55,15 +68,12 @@ function animate_spaces(spaces, color) {
 
 
 
-const form = document.getElementById("file_form");
-form.addEventListener("submit", submit_file);
-
 
 
 const board = document.getElementById("pathfinder-board");
 
 function create_board(height=20, width=20) {
-    board.innerHTML = ""
+    board.innerHTML = "";
     for (let row = 0; row < height; row++) {
         currentRow = document.createElement('tr');
         currentRow.id = `row${row}`;
@@ -79,8 +89,6 @@ function create_board(height=20, width=20) {
         board.appendChild(currentRow);
     }
 }
-
-
 
 function sample_board() {
     board.innerHTML = `<table id="pathfinder-board"><tr id="row0"><td id="0,0" style="background-color: grey;"></td><td id="0,1"></td><td id="0,2"></td><td id="0,3"></td><td id="0,4"></td><td id="0,5" style="background-color: grey;"></td><td id="0,6"></td><td id="0,7"></td><td id="0,8"></td><td id="0,9"></td><td id="0,10" style="background-color: grey;"></td><td id="0,11"></td><td id="0,12" style="background-color: grey;"></td><td id="0,13" style="background-color: grey;"></td><td id="0,14" ></td><td id="0,15" ></td><td id="0,16" ></td><td id="0,17" style="background-color: grey;"></td><td id="0,18" style="background-color: grey;"></td><td id="0,19"></td></tr>

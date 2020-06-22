@@ -3,13 +3,16 @@
     margin: auto;
     padding: 20px 0;
 }
-h1, form{
+h1, form, #error-resp{
     text-align: center;
 }
 
 
 #submit {
     background-color: #28a745;
+}
+#error-resp {
+    color: red;
 }
 #details {
     display: block;
@@ -21,6 +24,7 @@ h1, form{
     height: 150px;
     border: 1px solid grey;
     line-height: 25px;
+    overflow: scroll;
 }
 
 
