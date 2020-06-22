@@ -1,0 +1,89 @@
+.pf-wrapper {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px 0;
+}
+h1, form{
+    text-align: center;
+}
+
+
+#submit {
+    background-color: #28a745;
+}
+#details {
+    display: block;
+    margin: 0 auto 20px auto;
+    background-color: #28a745;
+}
+#results {
+    padding: 10px;
+    height: 150px;
+    border: 1px solid grey;
+    line-height: 25px;
+}
+
+
+
+#pathfinder-board {
+    width: auto;
+    margin: 20px auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+#pathfinder-board td {
+    width: 30px;
+    border: 1px solid black;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+#pathfinder-board tr {
+    height: 30px;
+    margin: 0;
+}
+#Start, #End {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+
+
+#board-key {
+    width: 200px;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.key-color {
+    height: 25px;
+    width: 25px;
+    margin: 5px;
+    display: inline-block;
+}
+.key-text {
+    vertical-align: top;
+    margin-top: 10px;
+    display: inline-block;
+}
+.wall-key {
+    background-color: grey;
+}
+.user-checked {
+    background-color: #28a745;
+}
+.user-path {
+    background-color: #7DCE82;
+}
+.checked {
+    background-color: #2453ff;
+}
+.path {
+    background-color: #43a0fd;
+}
+
+
+
+#detail-modal-dialog {
+    max-width: 700px;
+}
