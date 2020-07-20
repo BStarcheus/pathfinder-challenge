@@ -10,7 +10,7 @@
   </head>
 <body>
   <div class="pf-wrapper">
-    <h1>Pathfinder</h1>
+    <h1>Pathfinder Challenge</h1>
     <p>
       Congratulations on finding another Hummus Challenge. 
       This time we’ve dropped you in a room with hummus, 
@@ -32,7 +32,7 @@
     </button>
 
     <form id="file_form" action="https://pathfinder-challenge-jay4a5esha-uc.a.run.app" method="POST" enctype="multipart/form-data">
-      <input type="file" id="pyFile" name="pyFile">
+      <input type="file" id="pyFile" name="pyFile" required>
       <input type="submit" id="submit" class="btn btn-primary">
     </form>
     <p id="error-resp"></p>
@@ -127,7 +127,8 @@
                 Get a list of the neighbors (vertically and horizontally adjacent 
                 that are not walls) of a node with <code>board.neighbors(your_current_node.id)</code>
               </li>
-              <li>Hint: Once you have found the hummus, you’ll want to trace your 
+              <li>
+                Hint: Once you have found the hummus, you’ll want to trace your 
                 path back to the start. Each time you are about to visit a new 
                 neighbor node, set <code>new_neighbor_node.prevNode</code> to your current 
                 node (the actual object, not just the string id).

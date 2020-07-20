@@ -1,15 +1,16 @@
 .pf-wrapper {
     max-width: 800px;
     margin: auto;
-    padding: 20px 0;
+    padding: 20px 10px;
 }
-h1, form, #error-resp{
+h1, form, #error-resp {
     text-align: center;
 }
 
 
-#submit {
+#submit, #details {
     background-color: #28a745;
+    border-color: #28a745;
 }
 #error-resp {
     color: red;
@@ -17,7 +18,6 @@ h1, form, #error-resp{
 #details {
     display: block;
     margin: 0 auto 20px auto;
-    background-color: #28a745;
 }
 #results {
     padding: 10px;

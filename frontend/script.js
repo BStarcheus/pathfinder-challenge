@@ -1,20 +1,20 @@
 const form = document.getElementById("file_form");
-form.addEventListener("submit", submit_file);
+form.addEventListener("submit", submitFile);
 
-async function submit_file(event) {
+async function submitFile(event) {
     event.preventDefault();
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", form.action); 
-    xhr.onload = handle_pathfind_resp;
-    var formData = new FormData(document.getElementById("file_form"));
+    xhr.onload = handlePathfindResp;
+    var formData = new FormData(form);
     xhr.send(formData);
 }
 
 
-async function handle_pathfind_resp(event) { 
+async function handlePathfindResp(event) { 
     try {
-        resp_data = JSON.parse(event.target.response);
+        respData = JSON.parse(event.target.response);
     } catch (err) {
         console.log(err);
         document.getElementById("error-resp").innerText = "Internal Error";
@@ -22,36 +22,36 @@ async function handle_pathfind_resp(event) {
     }
     
     document.getElementById("error-resp").innerText = "";
-    if (resp_data.error) {
-        document.getElementById("error-resp").innerText = resp_data.error;
+    if (respData.error) {
+        document.getElementById("error-resp").innerText = respData.error;
         return;
     }
 
-    for (let board = 0; board < resp_data.length; board++) {
-        create_board(); // Reset board
-        current_board_data = resp_data[board];
+    for (let board = 0; board < respData.length; board++) {
+        createBoard(); // Reset board
+        currentBoardData = respData[board];
 
-        for (let wall = 0; wall < current_board_data.walls.length; wall++) {
-            document.getElementById(current_board_data.walls[wall]).style = 'background-color: grey;';
+        for (let wall = 0; wall < currentBoardData.walls.length; wall++) {
+            document.getElementById(currentBoardData.walls[wall]).style = 'background-color: grey;';
         }
         
-        document.getElementById(current_board_data.start).innerHTML = '<img src="stick_figure.png" alt="Start" id="Start">';
-        document.getElementById(current_board_data.end).innerHTML = '<img src="hummus_emoji.png" alt="End" id="End">';
-        await animate_spaces(current_board_data.user_checked_spaces, '#28a745');
-        await animate_spaces(current_board_data.user_path, '#7DCE82');
+        document.getElementById(currentBoardData.start).innerHTML = '<img src="stick_figure.png" alt="Start" id="Start">';
+        document.getElementById(currentBoardData.end).innerHTML = '<img src="hummus_emoji.png" alt="End" id="End">';
+        await animateSpaces(currentBoardData.user_checked_spaces, '#28a745');
+        await animateSpaces(currentBoardData.user_path, '#7DCE82');
 
-        if (!current_board_data.user_path_valid) {
-            await animate_spaces(current_board_data.correct_checked_spaces, '#2453ff');
+        if (!currentBoardData.user_path_valid) {
+            await animateSpaces(currentBoardData.correct_checked_spaces, '#2453ff');
         }
-        await animate_spaces(current_board_data.correct_path, '#43a0fd');
+        await animateSpaces(currentBoardData.correct_path, '#43a0fd');
 
-        document.getElementById('results').innerText += current_board_data.msg;
+        document.getElementById('results').innerText += currentBoardData.msg;
     }
 }
 
 
 
-function animate_spaces(spaces, color) {
+function animateSpaces(spaces, color) {
     i = 0;
     return new Promise((resolve)=> {
         animate = setInterval(()=>{
@@ -67,12 +67,9 @@ function animate_spaces(spaces, color) {
 }
 
 
-
-
-
 const board = document.getElementById("pathfinder-board");
 
-function create_board(height=20, width=20) {
+function createBoard(height=20, width=20) {
     board.innerHTML = "";
     for (let row = 0; row < height; row++) {
         currentRow = document.createElement('tr');
@@ -80,18 +77,18 @@ function create_board(height=20, width=20) {
         
 
         for (let col = 0; col < width; col++) {
-            board_square = document.createElement('td');
-            board_square.id = `${row},${col}`;
+            boardSquare = document.createElement('td');
+            boardSquare.id = `${row},${col}`;
 
-            currentRow.appendChild(board_square);
+            currentRow.appendChild(boardSquare);
 
         }
         board.appendChild(currentRow);
     }
 }
 
-function sample_board() {
-    board.innerHTML = `<table id="pathfinder-board"><tr id="row0"><td id="0,0" style="background-color: grey;"></td><td id="0,1"></td><td id="0,2"></td><td id="0,3"></td><td id="0,4"></td><td id="0,5" style="background-color: grey;"></td><td id="0,6"></td><td id="0,7"></td><td id="0,8"></td><td id="0,9"></td><td id="0,10" style="background-color: grey;"></td><td id="0,11"></td><td id="0,12" style="background-color: grey;"></td><td id="0,13" style="background-color: grey;"></td><td id="0,14" ></td><td id="0,15" ></td><td id="0,16" ></td><td id="0,17" style="background-color: grey;"></td><td id="0,18" style="background-color: grey;"></td><td id="0,19"></td></tr>
+function sampleBoard() {
+    board.innerHTML = `<tr id="row0"><td id="0,0" style="background-color: grey;"></td><td id="0,1"></td><td id="0,2"></td><td id="0,3"></td><td id="0,4"></td><td id="0,5" style="background-color: grey;"></td><td id="0,6"></td><td id="0,7"></td><td id="0,8"></td><td id="0,9"></td><td id="0,10" style="background-color: grey;"></td><td id="0,11"></td><td id="0,12" style="background-color: grey;"></td><td id="0,13" style="background-color: grey;"></td><td id="0,14" ></td><td id="0,15" ></td><td id="0,16" ></td><td id="0,17" style="background-color: grey;"></td><td id="0,18" style="background-color: grey;"></td><td id="0,19"></td></tr>
                         <tr id="row1"><td id="1,0" style="background-color: grey;"></td><td id="1,1" style="background-color: grey;"></td><td id="1,2"></td><td id="1,3"></td><td id="1,4"></td><td id="1,5"></td><td id="1,6" style="background-color: grey;"></td><td id="1,7"></td><td id="1,8" style="background-color: grey;"></td><td id="1,9" style="background-color: grey;"></td><td id="1,10" style="background-color: rgb(67, 160, 253);"><img src="hummus_emoji.png" alt="End" id="End"></td><td id="1,11" style="background-color: grey;"></td><td id="1,12" style="background-color: grey;"></td><td id="1,13" ></td><td id="1,14" ></td><td id="1,15" ></td><td id="1,16" ></td><td id="1,17" ></td><td id="1,18" ></td><td id="1,19"></td></tr>
                         <tr id="row2"><td id="2,0"></td><td id="2,1" style="background-color: grey;"></td><td id="2,2" style="background-color: grey;"></td><td id="2,3"></td><td id="2,4" style="background-color: grey;"></td><td id="2,5"></td><td id="2,6" style="background-color: grey;"></td><td id="2,7"></td><td id="2,8" ></td><td id="2,9"></td><td id="2,10" style="background-color: rgb(67, 160, 253);"></td><td id="2,11" style="background-color: grey;"></td><td id="2,12" style="background-color: grey;"></td><td id="2,13" ></td><td id="2,14" ></td><td id="2,15" ></td><td id="2,16" style="background-color: grey;"></td><td id="2,17" ></td><td id="2,18" style="background-color: grey;"></td><td id="2,19" style="background-color: grey;"></td></tr>
                         <tr id="row3"><td id="3,0"></td><td id="3,1" style="background-color: grey;"></td><td id="3,2" style="background-color: grey;"></td><td id="3,3"></td><td id="3,4"></td><td id="3,5"></td><td id="3,6"></td><td id="3,7" ></td><td id="3,8" ></td><td id="3,9" style="background-color: rgb(67, 160, 253);"></td><td id="3,10" style="background-color: rgb(67, 160, 253);"></td><td id="3,11" style="background-color: grey;"></td><td id="3,12" ></td><td id="3,13" style="background-color: grey;"></td><td id="3,14" ></td><td id="3,15" ></td><td id="3,16" ></td><td id="3,17" ></td><td id="3,18" ></td><td id="3,19" ></td></tr>
@@ -110,7 +107,7 @@ function sample_board() {
                         <tr id="row16"><td id="16,0" style="background-color: grey;"></td><td id="16,1"></td><td id="16,2" style="background-color: grey;"></td><td id="16,3"></td><td id="16,4"></td><td id="16,5"></td><td id="16,6"></td><td id="16,7" style="background-color: grey;"></td><td id="16,8"></td><td id="16,9"></td><td id="16,10"></td><td id="16,11"></td><td id="16,12"></td><td id="16,13" style="background-color: grey;"></td><td id="16,14" style="background-color: grey;"></td><td id="16,15"></td><td id="16,16"></td><td id="16,17" style="background-color: grey;"></td><td id="16,18"></td><td id="16,19" style="background-color: grey;"></td></tr>
                         <tr id="row17"><td id="17,0"></td><td id="17,1"></td><td id="17,2" style="background-color: grey;"></td><td id="17,3" style="background-color: grey;"></td><td id="17,4" style="background-color: grey;"></td><td id="17,5"></td><td id="17,6"></td><td id="17,7" style="background-color: grey;"></td><td id="17,8"></td><td id="17,9" style="background-color: grey;"></td><td id="17,10" style="background-color: grey;"></td><td id="17,11"></td><td id="17,12" style="background-color: grey;"></td><td id="17,13"></td><td id="17,14"></td><td id="17,15" style="background-color: grey;"></td><td id="17,16"></td><td id="17,17"></td><td id="17,18" style="background-color: grey;"></td><td id="17,19"></td></tr>
                         <tr id="row18"><td id="18,0"></td><td id="18,1" style="background-color: grey;"></td><td id="18,2"></td><td id="18,3" style="background-color: grey;"></td><td id="18,4" style="background-color: grey;"></td><td id="18,5"></td><td id="18,6"></td><td id="18,7"></td><td id="18,8" style="background-color: grey;"></td><td id="18,9"></td><td id="18,10"></td><td id="18,11" style="background-color: grey;"></td><td id="18,12"></td><td id="18,13"></td><td id="18,14"></td><td id="18,15"></td><td id="18,16"></td><td id="18,17"></td><td id="18,18"></td><td id="18,19" style="background-color: grey;"></td></tr>
-                        <tr id="row19"><td id="19,0" style="background-color: grey;"></td><td id="19,1"></td><td id="19,2" style="background-color: grey;"></td><td id="19,3" style="background-color: grey;"></td><td id="19,4" style="background-color: grey;"></td><td id="19,5"></td><td id="19,6"></td><td id="19,7" style="background-color: grey;"></td><td id="19,8"></td><td id="19,9" style="background-color: grey;"></td><td id="19,10" style="background-color: grey;"></td><td id="19,11"></td><td id="19,12"></td><td id="19,13"></td><td id="19,14"></td><td id="19,15"></td><td id="19,16"></td><td id="19,17"></td><td id="19,18"></td><td id="19,19"></td></tr></table>`
+                        <tr id="row19"><td id="19,0" style="background-color: grey;"></td><td id="19,1"></td><td id="19,2" style="background-color: grey;"></td><td id="19,3" style="background-color: grey;"></td><td id="19,4" style="background-color: grey;"></td><td id="19,5"></td><td id="19,6"></td><td id="19,7" style="background-color: grey;"></td><td id="19,8"></td><td id="19,9" style="background-color: grey;"></td><td id="19,10" style="background-color: grey;"></td><td id="19,11"></td><td id="19,12"></td><td id="19,13"></td><td id="19,14"></td><td id="19,15"></td><td id="19,16"></td><td id="19,17"></td><td id="19,18"></td><td id="19,19"></td></tr>`
 }
 
-sample_board();
+sampleBoard();
