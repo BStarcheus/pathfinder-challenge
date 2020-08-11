@@ -15,24 +15,26 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/', methods=["POST"])
 @cross_origin()
 def upload_file():
-    if request.method == "POST":
-        if 'pyFile' not in request.files:
-            return jsonify({"error":"No file submitted"})
-        file = request.files['pyFile']
-        if file.filename == '':
-            return jsonify({"error":"No selected file"})
-        if file and request.files["pyFile"].mimetype == "text/x-python-script":
-            filename = secure_filename(file.filename)
-            file.save(filename)
-            mod, _ = filename.rsplit('.py', 1)
-            
-            try:
-                return jsonify(run_pathfinder_test(mod))
-            except Exception as e:
-                print(e)
-                return jsonify({"error":f"Internal error"})
-        else:
-            return jsonify({"error":"Invalid file type."})
+    if request.method != "POST":
+        return jsonify({"error":f"Invalid request type {request.method}."})
+
+    if 'pyFile' not in request.files:
+        return jsonify({"error":"No file submitted"})
+    file = request.files['pyFile']
+    if file.filename == '':
+        return jsonify({"error":"No selected file"})
+    if file and request.files["pyFile"].mimetype == "text/x-python-script":
+        filename = secure_filename(file.filename)
+        file.save(filename)
+        mod, _ = filename.rsplit('.py', 1)
+        
+        try:
+            return jsonify(run_pathfinder_test(mod))
+        except Exception as e:
+            print(e)
+            return jsonify({"error":"Internal error"})
+    else:
+        return jsonify({"error":"Invalid file type."})
 
 
 def run_pathfinder_test(module_name, num_boards=3):
@@ -85,7 +87,7 @@ def run_pathfinder_test(module_name, num_boards=3):
 
         if num_correct == num_boards:
             results[-1]['msg'] += f"You found the hummus all {num_boards} times!\n"
-            results[-1]['msg'] += "Clue: You're too early. Wait until all 3 challenges have been created, then try again."
+            results[-1]['msg'] += "Clue: d18b07caa05fc"
 
         return results
     else:

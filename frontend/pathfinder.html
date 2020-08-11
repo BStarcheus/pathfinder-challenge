@@ -8,143 +8,143 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <title>Pathfinder Challenge</title>
   </head>
-<body>
-  <div class="pf-wrapper">
-    <h1>Pathfinder Challenge</h1>
-    <p>
-      Congratulations on finding another Hummus Challenge. 
-      This time we’ve dropped you in a room with hummus, 
-      but there are walls in the way. Using your favorite 
-      pathfinding algorithm, find a path to the hummus.
-    </p>
-    <p>
-      Below is a sample board with a possible shortest path. 
-      It's simple: start at the person, end at the hummus, and avoid all walls. 
-    </p>
-    <p>
-      We’ll run your algorithm through 3 random boards. 
-      Next we’ll show you how your algorithm worked followed by the 
-      shortest path our algorithm found. If your algorithm gets a valid path 
-      for all 3 boards, you’ll get a Hummus Huckster Mystery Clue.
-    </p>
-    <button type="button" id="details" class="btn btn-primary" data-toggle="modal" data-target="#detailsModal">
-      Details
-    </button>
+  <body>
+    <div class="pf-wrapper">
+      <h1>Pathfinder Challenge</h1>
+      <p>
+        Congratulations on finding another Hummus Challenge. 
+        This time we’ve dropped you in a room with hummus, 
+        but there are walls in the way. Using your favorite 
+        pathfinding algorithm, find a path to the hummus.
+      </p>
+      <p>
+        Below is a sample board with a possible shortest path. 
+        It's simple: start at the person, end at the hummus, and avoid all walls. 
+      </p>
+      <p>
+        We’ll run your algorithm through 3 random boards. 
+        Next we’ll show you how your algorithm worked followed by the 
+        shortest path our algorithm found. If your algorithm gets a valid path 
+        for all 3 boards, you’ll get a Hummus Huckster Mystery Clue.
+      </p>
+      <button type="button" id="details" class="btn btn-primary" data-toggle="modal" data-target="#detailsModal">
+        Details
+      </button>
 
-    <form id="file_form" action="https://pathfinder-challenge-jay4a5esha-uc.a.run.app" method="POST" enctype="multipart/form-data">
-      <input type="file" id="pyFile" name="pyFile" required>
-      <input type="submit" id="submit" class="btn btn-primary">
-    </form>
-    <p id="error-resp"></p>
+      <form id="file_form" action="https://pathfinder-challenge-jay4a5esha-uc.a.run.app" method="POST" enctype="multipart/form-data">
+        <input type="file" id="pyFile" name="pyFile" required>
+        <input type="submit" id="submit" class="btn btn-primary">
+      </form>
+      <p id="error-resp"></p>
 
-    <table id="pathfinder-board"></table>
+      <table id="pathfinder-board"></table>
 
-    <div id="board-key">
-      <div>
-        <div class="key-color wall-key"></div>
-        <div class="key-text">Wall</div>
+      <div id="board-key">
+        <div>
+          <div class="key-color wall-key"></div>
+          <div class="key-text">Wall</div>
+        </div>
+        <div>
+          <div class="key-color user-checked"></div>
+          <div class="key-text">Your checked spaces</div>
+        </div>
+        <div>
+          <div class="key-color user-path"></div>
+          <div class="key-text">Your path</div>
+        </div>
+        <div>
+          <div class="key-color checked"></div>
+          <div class="key-text">Our checked spaces</div>
+        </div>
+        <div>
+          <div class="key-color path"></div>
+          <div class="key-text">Our path</div>
+        </div>
       </div>
-      <div>
-        <div class="key-color user-checked"></div>
-        <div class="key-text">Your checked spaces</div>
-      </div>
-      <div>
-        <div class="key-color user-path"></div>
-        <div class="key-text">Your path</div>
-      </div>
-      <div>
-        <div class="key-color checked"></div>
-        <div class="key-text">Our checked spaces</div>
-      </div>
-      <div>
-        <div class="key-color path"></div>
-        <div class="key-text">Our path</div>
-      </div>
-    </div>
 
-    Results
-    <p id="results"></p>
+      Results
+      <p id="results"></p>
 
-    
-    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
-      <div id="detail-modal-dialog" class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="detailsModalLabel">Details</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>
-              A valid path starts at the start point, ends at the end point 
-              (the hummus!), and each step you take must be to a vertically or 
-              horizontally adjacent space that is not a wall. In other words, 
-              take a single step up, down, left, or right; no diagonals and no walls! 
-            </p>
-            <p>
-              As long as your path is valid you’ll find the hummus, 
-              but we challenge you to find it in the shortest path!
-            </p>
-            
-            <h3>Requirements</h3>
-            <ul>
-              <li>
-                Submit a Python file with a function named “pathfinder”
-              </li>
-              <li>
-                Function Parameters:
-                <ul>
-                  <li>board: A graph representing a 20x20 grid. Details below.</li>
-                  <li>startNode: The graph node to start at</li>
-                  <li>endNode: The graph node to end at</li>
-                </ul>
-              </li>
-              <li>
-                Return: A single List with the following 2 items in the following order
-                <ul>
-                  <li>
-                    List of coordinates in the order visited in your search, strings in the format ‘x,y’
-                  </li>
-                  <li>
-                    List of coordinates in your path including start and end, strings in the format ‘x,y’
-                  </li>
-                </ul>
-              </li>
-            </ul>
-        
-            <h3>Tips for using the board and its nodes</h3>
-            <p>
-              Everytime you move along your path, you will interact with a new node object. 
-              These should be the only details you need. 
-              Everything else about your algorithm is up to you!
-            </p>
-            <ul>
-              <li>
-                Get the string value ‘x,y’ of the coordinate with <code>your_current_node.id</code>
-              </li>
-              <li>
-                Get a list of the neighbors (vertically and horizontally adjacent 
-                that are not walls) of a node with <code>board.neighbors(your_current_node.id)</code>
-              </li>
-              <li>
-                Hint: Once you have found the hummus, you’ll want to trace your 
-                path back to the start. Each time you are about to visit a new 
-                neighbor node, set <code>new_neighbor_node.prevNode</code> to your current 
-                node (the actual object, not just the string id).
-              </li>
-            </ul>
-            <p>Good Luck!</p>
+      
+      <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div id="detail-modal-dialog" class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                A valid path starts at the start point, ends at the end point 
+                (the hummus!), and each step you take must be to a vertically or 
+                horizontally adjacent space that is not a wall. In other words, 
+                take a single step up, down, left, or right; no diagonals and no walls! 
+              </p>
+              <p>
+                As long as your path is valid you’ll find the hummus, 
+                but we challenge you to find it in the shortest path!
+              </p>
+              
+              <h3>Requirements</h3>
+              <ul>
+                <li>
+                  Submit a Python file with a function named “pathfinder”
+                </li>
+                <li>
+                  Function Parameters:
+                  <ul>
+                    <li>board: A graph representing a 20x20 grid. Details below.</li>
+                    <li>startNode: The graph node to start at</li>
+                    <li>endNode: The graph node to end at</li>
+                  </ul>
+                </li>
+                <li>
+                  Return: A single List with the following 2 items in the following order
+                  <ul>
+                    <li>
+                      List of coordinates in the order visited in your search, strings in the format ‘x,y’
+                    </li>
+                    <li>
+                      List of coordinates in your path including start and end, strings in the format ‘x,y’
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+          
+              <h3>Tips for using the board and its nodes</h3>
+              <p>
+                Everytime you move along your path, you will interact with a new node object. 
+                These should be the only details you need. 
+                Everything else about your algorithm is up to you!
+              </p>
+              <ul>
+                <li>
+                  Get the string value ‘x,y’ of the coordinate with <code>your_current_node.id</code>
+                </li>
+                <li>
+                  Get a list of the neighbors (vertically and horizontally adjacent 
+                  that are not walls) of a node with <code>board.neighbors(your_current_node.id)</code>
+                </li>
+                <li>
+                  Hint: Once you have found the hummus, you’ll want to trace your 
+                  path back to the start. Each time you are about to visit a new 
+                  neighbor node, set <code>new_neighbor_node.prevNode</code> to your current 
+                  node (the actual object, not just the string id).
+                </li>
+              </ul>
+              <p>Good Luck!</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <script src="script.js"></script>
+      <script src="script.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </div> 
-</body>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </div> 
+  </body>
 </html>
