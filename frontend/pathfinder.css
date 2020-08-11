@@ -3,7 +3,7 @@
     margin: auto;
     padding: 20px 10px;
 }
-h1, form, #error-resp {
+h1, form, #error-resp, #load-msg {
     text-align: center;
 }
 

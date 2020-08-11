@@ -1,29 +1,42 @@
 const form = document.getElementById("file_form");
 form.addEventListener("submit", submitFile);
 
+const board = document.getElementById("pathfinder-board");
+var isAnimating = false;
+sampleBoard();
+
 async function submitFile(event) {
     event.preventDefault();
+    if (!isAnimating) {
+        document.getElementById("load-msg").style = "display: block;";
+        document.getElementById("error-resp").innerText = "";
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", form.action); 
-    xhr.onload = handlePathfindResp;
-    var formData = new FormData(form);
-    xhr.send(formData);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", form.action); 
+        xhr.onload = handleResp;
+        var formData = new FormData(form);
+        xhr.send(formData);
+    }
 }
 
 
-async function handlePathfindResp(event) { 
+async function handleResp(event) {
+    isAnimating = true;
+    document.getElementById("load-msg").style = "display: none;";
+    document.getElementById('results').innerText = "";
+
     try {
         respData = JSON.parse(event.target.response);
     } catch (err) {
         console.log(err);
         document.getElementById("error-resp").innerText = "Internal Error";
+        isAnimating = false;
         return;
     }
     
-    document.getElementById("error-resp").innerText = "";
     if (respData.error) {
         document.getElementById("error-resp").innerText = respData.error;
+        isAnimating = false;
         return;
     }
 
@@ -47,8 +60,8 @@ async function handlePathfindResp(event) {
 
         document.getElementById('results').innerText += currentBoardData.msg;
     }
+    isAnimating = false;
 }
-
 
 
 function animateSpaces(spaces, color) {
@@ -67,21 +80,17 @@ function animateSpaces(spaces, color) {
 }
 
 
-const board = document.getElementById("pathfinder-board");
-
 function createBoard(height=20, width=20) {
     board.innerHTML = "";
     for (let row = 0; row < height; row++) {
         currentRow = document.createElement('tr');
         currentRow.id = `row${row}`;
         
-
         for (let col = 0; col < width; col++) {
             boardSquare = document.createElement('td');
             boardSquare.id = `${row},${col}`;
 
             currentRow.appendChild(boardSquare);
-
         }
         board.appendChild(currentRow);
     }
@@ -109,5 +118,3 @@ function sampleBoard() {
                         <tr id="row18"><td id="18,0"></td><td id="18,1" style="background-color: grey;"></td><td id="18,2"></td><td id="18,3" style="background-color: grey;"></td><td id="18,4" style="background-color: grey;"></td><td id="18,5"></td><td id="18,6"></td><td id="18,7"></td><td id="18,8" style="background-color: grey;"></td><td id="18,9"></td><td id="18,10"></td><td id="18,11" style="background-color: grey;"></td><td id="18,12"></td><td id="18,13"></td><td id="18,14"></td><td id="18,15"></td><td id="18,16"></td><td id="18,17"></td><td id="18,18"></td><td id="18,19" style="background-color: grey;"></td></tr>
                         <tr id="row19"><td id="19,0" style="background-color: grey;"></td><td id="19,1"></td><td id="19,2" style="background-color: grey;"></td><td id="19,3" style="background-color: grey;"></td><td id="19,4" style="background-color: grey;"></td><td id="19,5"></td><td id="19,6"></td><td id="19,7" style="background-color: grey;"></td><td id="19,8"></td><td id="19,9" style="background-color: grey;"></td><td id="19,10" style="background-color: grey;"></td><td id="19,11"></td><td id="19,12"></td><td id="19,13"></td><td id="19,14"></td><td id="19,15"></td><td id="19,16"></td><td id="19,17"></td><td id="19,18"></td><td id="19,19"></td></tr>`
 }
-
-sampleBoard();
